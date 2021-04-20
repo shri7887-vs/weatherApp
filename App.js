@@ -25,13 +25,52 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import Search from './screens/Search';
+import Home from './screens/Home';
+
+const Tabs = createBottomTabNavigator();
 const App = () => {
   return (
-    <SafeAreaView>
+    <>
       <StatusBar barStyle="light-content" backgroundColor="#16161d" />
-      <Search />
-      <View
+      <NavigationContainer>
+        <Tabs.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({color}) => {
+              let iconName;
+              if (route.name === 'Home') {
+                iconName = 'home-city-outline';
+              } else if (route.name === 'Search') {
+                iconName = 'map-search-outline';
+              }
+              return (
+                <MaterialCommunityIcons
+                  name={iconName}
+                  size={25}
+                  color={color}
+                />
+              );
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: '#16161d',
+            inactiveTintColor: 'gray',
+          }}>
+          <Tabs.Screen
+            name="Home"
+            component={Home}
+            initialParams={{city: 'Chennai'}}
+          />
+          <Tabs.Screen name="Search" component={Search} />
+        </Tabs.Navigator>
+      </NavigationContainer>
+      {/* <Search />
+      <Home /> */}
+      {/* <View
         style={{
           flex: 1,
           // flexDirection: 'row',
@@ -41,8 +80,43 @@ const App = () => {
           backgroundColor: 'black',
         }}>
         <Text>hello</Text>
-      </View>
-    </SafeAreaView>
+      </View> */}
+
+      {/* <StatusBar barStyle="dark-content" backgroundColor="#00aaff" />
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({color}) => {
+              let iconName;
+              if (route.name === 'home') {
+                iconName = 'home-city-outline';
+              } else if (route.name === 'search') {
+                iconName = 'city';
+              }
+              return (
+                <MaterialCommunityIcons
+                  name={iconName}
+                  size={25}
+                  color={color}
+                />
+              );
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: 'white',
+            inactiveTintColor: 'gray',
+            activeBackgroundColor: '#00aaff',
+            inactiveBackgroundColor: '#00aaff',
+          }}>
+          <Tab.Screen
+            name="home"
+            component={Home}
+            initialParams={{city: 'london'}}
+          />
+          <Tab.Screen name="search" component={Search} />
+        </Tab.Navigator>
+      </NavigationContainer> */}
+    </>
   );
 };
 
